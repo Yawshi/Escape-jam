@@ -6,7 +6,7 @@ public class Game {
     Creature creature;
 
     public Game() throws InvalidCorridorException, DuplicateCorridorException {
-        layoutRooms();
+        layoutRooms3x3();
         player = new Player(roomPointer[7], roomPointer[1]);
         printLayout(false);
         player.promptPlayer();
@@ -42,7 +42,7 @@ public class Game {
         }
     }
 
-    void layoutRooms() throws InvalidCorridorException, DuplicateCorridorException {
+    void layoutRooms3x3() throws InvalidCorridorException, DuplicateCorridorException {
         roomPointer[1] = new Room();
         roomPointer[0] = new Room(null, roomPointer[1], null, null);
         roomPointer[2] = new Room(roomPointer[1], null, null, null);

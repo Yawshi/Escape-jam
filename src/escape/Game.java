@@ -8,21 +8,21 @@ public class Game {
     public Game() throws InvalidCorridorException, DuplicateCorridorException {
         layoutRooms3x3();
         player = new Player(roomPointer[7], roomPointer[1]);
-        printLayout(false);
+        printLayout3x3(false);
         player.promptPlayer();
         creature = new Creature(roomPointer[1], roomPointer[7]);
         boolean isCreatureVisible = true;
         while (true) {
-            printLayout(isCreatureVisible);
+            printLayout3x3(isCreatureVisible);
 
             player.promptPlayer();
             if (player.inRoom == creature.inRoom) {
-                printLayout(true);
+                printLayout3x3(true);
                 System.out.println("The creature caught up to you. YOU LOSE");
                 break;
             }
             if (player.atGoal()) {
-                printLayout(true);
+                printLayout3x3(true);
                 System.out.println("You reach the goal! YOU WIN!");
                 break;
             }
@@ -30,12 +30,12 @@ public class Game {
 
             creature.promptCreature();
             if (player.inRoom == creature.inRoom) {
-                printLayout(true);
+                printLayout3x3(true);
                 System.out.println("The creature caught up to you. YOU LOSE");
                 break;
             }
             if (creature.atGoal()) {
-                printLayout(true);
+                printLayout3x3(true);
                 System.out.println("The creature reached its goal. YOU LOSE");
                 break;
             }
@@ -56,23 +56,23 @@ public class Game {
         roomPointer[8] = new Room(roomPointer[7], null, roomPointer[5], null);
     }
 
-    void printLayout(boolean isCreatureVisible) {
+    void printLayout3x3(boolean isCreatureVisible) {
         System.out.println("+-----+-----+-----+");
         System.out.println("|     |     |     |");
-        printRoomRow(0, isCreatureVisible);
+        printRoomRow3x3(0, isCreatureVisible);
         System.out.println("|     |     |     |");
-        printWallRow(0);
+        printWallRow3x3(0);
         System.out.println("|     |     |     |");
-        printRoomRow(1, isCreatureVisible);
+        printRoomRow3x3(1, isCreatureVisible);
         System.out.println("|     |     |     |");
-        printWallRow(1);
+        printWallRow3x3(1);
         System.out.println("|     |     |     |");
-        printRoomRow(2, isCreatureVisible);
+        printRoomRow3x3(2, isCreatureVisible);
         System.out.println("|     |     |     |");
         System.out.println("+-----+-----+-----+");
     }
 
-    void printRoomRow(int roomRow, boolean isCreatureVisible) {
+    void printRoomRow3x3(int roomRow, boolean isCreatureVisible) {
         System.out.print(  "|  ");
         printRoomContents(roomPointer[roomRow*3], isCreatureVisible);
         System.out.print(      "  ");
@@ -87,7 +87,7 @@ public class Game {
         System.out.println();
     }
 
-    void printWallRow(int wallRow) {
+    void printWallRow3x3(int wallRow) {
         System.out.print(  "+--");
         printCorridor(roomPointer[wallRow*3], false);
         System.out.print(      "--+--");

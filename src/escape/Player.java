@@ -3,15 +3,15 @@ package escape;
 import java.util.Scanner;
 
 public class Player {
-    Room inRoom, previousRoom, startRoom, goalRoom;
-    int stamina;
+    Room inRoom, startRoom, goalRoom;
+    int stamina, step;
 
     Player(Room start, Room goal) {
         this.inRoom = start;
-        this.previousRoom = start;
         this.startRoom = start;
         this.goalRoom = goal;
         this.stamina = 2;
+        this.step = 0;
     }
 
     void promptPlayer(){
@@ -34,8 +34,6 @@ public class Player {
         if (this.inRoom.canGoDown()) System.out.print("down ");
         System.out.println();
 
-        System.out.println("do nothing");
-
         boolean isValidInput = false;
         while (!isValidInput) {
             @SuppressWarnings("resource")
@@ -46,9 +44,6 @@ public class Player {
                 isValidInput = move(input.substring(5));
             } else if (input.startsWith("block ")) {
                 isValidInput = blockCorridor(input.substring(6));
-            } else if (input.equals("do nothing")) {
-                isValidInput = true;
-                stamina = 2;
             } else isValidInput = false; 
             
             if (!isValidInput) {
@@ -62,30 +57,34 @@ public class Player {
         switch (direction) {
             case "left":
                 if (this.inRoom.canGoLeft()) {
-                    this.previousRoom = this.inRoom;
                     this.inRoom = this.inRoom.getRoomToLeft();
                     stamina -= 1;
+                    step += 1;
+                    this.inRoom.setPlayerStepHere(step);
                     return true;
                 } else return false;
             case "right":
                 if (this.inRoom.canGoRight()) {
-                    this.previousRoom = this.inRoom;
                     this.inRoom = this.inRoom.getRoomToRight();
                     stamina -= 1;
+                    step += 1;
+                    this.inRoom.setPlayerStepHere(step);
                     return true;
                 } else return false;
             case "up":
                 if (this.inRoom.canGoUp()) {
-                    this.previousRoom = this.inRoom;
                     this.inRoom = this.inRoom.getRoomToUp();
                     stamina -= 1;
+                    step += 1;
+                    this.inRoom.setPlayerStepHere(step);
                     return true;
                 } else return false;
             case "down":
                 if (this.inRoom.canGoDown()) {
-                    this.previousRoom = this.inRoom;
                     this.inRoom = this.inRoom.getRoomToDown();
                     stamina -= 1;
+                    step += 1;
+                    this.inRoom.setPlayerStepHere(step);
                     return true;
                 } else return false;
             default:

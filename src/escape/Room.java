@@ -2,6 +2,7 @@ package escape;
 
 public class Room {
     private Corridor corridorLeft, corridorRight, corridorUp, corridorDown;
+    private int playerStep = 0;
 
     Room() {
     }
@@ -95,5 +96,13 @@ public class Room {
         if (this.canGoDown()) {
             return this.corridorDown.blockCorridor();
         } else return false;
+    }
+
+    int getPlayerStepHere() {
+        return this.playerStep;
+    }
+
+    void setPlayerStepHere(int step) {
+        this.playerStep = step;
     }
 }

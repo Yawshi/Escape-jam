@@ -35,6 +35,7 @@ public class Player {
 
         if (blockOptions.isEmpty()) {
             System.out.println("Out of options! You trapped yourself in...");
+            promptDoNothing();
             return;
         } else {
             if (!moveOptions.isEmpty()) {
@@ -134,6 +135,14 @@ public class Player {
             default:
                 return false;
         }
+    }
+
+    void promptDoNothing() {
+        System.out.println("do nothing");
+
+        @SuppressWarnings("resource")
+            Scanner keyboard = new Scanner(System.in);
+            keyboard.nextLine();
     }
 
     boolean atGoal() {

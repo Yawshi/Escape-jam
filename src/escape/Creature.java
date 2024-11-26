@@ -1,67 +1,81 @@
 package escape;
 
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Creature {
-    Room inRoom, startRoom, goalRoom;
+    Room inRoom, previousRoom, startRoom, goalRoom;
+    int highestPlayerStepFound = 0;
 
     Creature(Room start, Room goal) {
         this.inRoom = start;
+        this.previousRoom = start;
         this.startRoom = start;
         this.goalRoom = goal;
     }
 
-    void promptCreature() {
-        System.out.println("Choose creature action: ");
+    void decideMove(Player player) {
+        Room moveTo = this.inRoom;
 
-        System.out.print("move: ");
-        if (this.inRoom.canGoLeft()) System.out.print("left ");
-        if (this.inRoom.canGoRight()) System.out.print("right ");
-        if (this.inRoom.canGoUp()) System.out.print("up ");
-        if (this.inRoom.canGoDown()) System.out.print("down ");
-        System.out.println();
+        // checks which rooms it can move to, and makes a list of them
+        ArrayList<Room> adjacentRooms = new ArrayList<Room>();
+        if (this.inRoom.canGoDown()) {
+            adjacentRooms.add(this.inRoom.getRoomToDown());
+        }
+        if (this.inRoom.canGoRight()) {
+            adjacentRooms.add(this.inRoom.getRoomToRight());
+        }
+        if (this.inRoom.canGoUp()) {
+            adjacentRooms.add(this.inRoom.getRoomToUp());
+        }
+        if (this.inRoom.canGoLeft()) {
+            adjacentRooms.add(this.inRoom.getRoomToLeft());
+        }
 
-        boolean isValidInput = false;
-        while (!isValidInput) {
-            @SuppressWarnings("resource")
-            Scanner keyboard = new Scanner(System.in);
-            String input = keyboard.nextLine();
+        // if there is only one option, it was the previous room. move there
+        if (adjacentRooms.size() == 1) {
+            moveTo = this.previousRoom;
+            this.previousRoom = this.inRoom;
+            this.inRoom = moveTo;
+            return;
+        }
 
-            if ((input.startsWith("move "))) {
-                isValidInput = move(input.substring(5));
-            } else isValidInput = false;
-            
-            if (!isValidInput) {
-                System.out.println("Invalid input, try again: ");
+        // do not go back to the previous room
+        adjacentRooms.remove(previousRoom);
+        this.previousRoom = this.inRoom;
+
+        // if there is only one option left now, move there
+        if (adjacentRooms.size() == 1) {
+            this.inRoom = adjacentRooms.get(0);
+            return;
+        }
+
+        // check remaining options for playerSteps, if found go to highest found
+        // if player is in any of the options, it always has the highest playerStep
+        // note: the highest playerStep found is recorded, and any found in the future that is 
+        //      lower than this will be ignored
+        for (Room room : adjacentRooms) {
+            if (room.getPlayerStepHere() > this.highestPlayerStepFound) {
+                this.highestPlayerStepFound = room.getPlayerStepHere();
+                moveTo = room;
             }
         }
-        System.out.println();
-    }
+        if (moveTo != this.inRoom) {
+            this.inRoom = moveTo;
+            return;
+        }
 
-    boolean move(String direction) {
-        switch (direction) {
-            case "left":
-                if (this.inRoom.canGoLeft()) {
-                    this.inRoom = this.inRoom.getRoomToLeft();
-                    return true;
-                } else return false;
-            case "right":
-                if (this.inRoom.canGoRight()) {
-                    this.inRoom = this.inRoom.getRoomToRight();
-                    return true;
-                } else return false;
-            case "up":
-                if (this.inRoom.canGoUp()) {
-                    this.inRoom = this.inRoom.getRoomToUp();
-                    return true;
-                } else return false;
-            case "down":
-                if (this.inRoom.canGoDown()) {
-                    this.inRoom = this.inRoom.getRoomToDown();
-                    return true;
-                } else return false;
-            default:
-                return false;
+        // check remaining options for its goal, if found go there
+        if (adjacentRooms.contains(this.goalRoom)) {
+            this.inRoom = this.goalRoom;
+            return;
+        }
+
+        // if going down is one of the remaining options, go down
+        // else pick a random remaining option
+        if (this.inRoom.canGoDown() && adjacentRooms.contains(this.inRoom.getRoomToDown())) {
+            this.inRoom = this.inRoom.getRoomToDown();
+        } else {
+            this.inRoom = adjacentRooms.get((int) Math.floor(Math.random() * adjacentRooms.size()));
         }
     }
 

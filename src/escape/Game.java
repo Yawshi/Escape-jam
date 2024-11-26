@@ -9,13 +9,13 @@ public class Game {
         layoutRooms3x3();
         player = new Player(roomPointer[7], roomPointer[1]);
         printLayout3x3(false);
-        player.promptPlayer();
+        player.promptDecide();
         creature = new Creature(roomPointer[1], roomPointer[7]);
         boolean isCreatureVisible = true;
         while (true) {
             printLayout3x3(isCreatureVisible);
 
-            player.promptPlayer();
+            player.promptDecide();
             if (player.inRoom == creature.inRoom) {
                 printLayout3x3(true);
                 System.out.println("The creature caught up to you. YOU LOSE");
@@ -26,9 +26,9 @@ public class Game {
                 System.out.println("You reach the goal! YOU WIN!");
                 break;
             }
-            isCreatureVisible = false;
+            isCreatureVisible = true;
 
-            creature.promptCreature();
+            creature.decideMove(player);
             if (player.inRoom == creature.inRoom) {
                 printLayout3x3(true);
                 System.out.println("The creature caught up to you. YOU LOSE");

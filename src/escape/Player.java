@@ -1,5 +1,6 @@
 package escape;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
@@ -14,25 +15,41 @@ public class Player {
         this.step = 0;
     }
 
-    void promptPlayer(){
+    void promptDecide() {
         System.out.println("Stamina: " + this.stamina);
         System.out.println("Choose and input your action: ");
 
+        ArrayList<String> moveOptions = new ArrayList<String>();
         if (stamina > 0) {
-            System.out.print("move: ");
-            if (this.inRoom.canGoLeft()) System.out.print("left ");
-            if (this.inRoom.canGoRight()) System.out.print("right ");
-            if (this.inRoom.canGoUp()) System.out.print("up ");
-            if (this.inRoom.canGoDown()) System.out.print("down ");
-            System.out.println();
-        } else System.out.println("Cannot move! Out of stamina");
+            if (this.inRoom.canGoLeft()) moveOptions.add("left");
+            if (this.inRoom.canGoRight()) moveOptions.add("right");
+            if (this.inRoom.canGoUp()) moveOptions.add("up");
+            if (this.inRoom.canGoDown()) moveOptions.add("down");
+        }
 
-        System.out.print("block: ");
-        if (this.inRoom.canGoLeft()) System.out.print("left ");
-        if (this.inRoom.canGoRight()) System.out.print("right ");
-        if (this.inRoom.canGoUp()) System.out.print("up ");
-        if (this.inRoom.canGoDown()) System.out.print("down ");
-        System.out.println();
+        ArrayList<String> blockOptions = new ArrayList<String>();
+        if (this.inRoom.canGoLeft()) blockOptions.add("left");
+        if (this.inRoom.canGoRight()) blockOptions.add("right");
+        if (this.inRoom.canGoUp()) blockOptions.add("up");
+        if (this.inRoom.canGoDown()) blockOptions.add("down");
+
+        if (blockOptions.isEmpty()) {
+            System.out.println("Out of options! You trapped yourself in...");
+            return;
+        } else {
+            if (!moveOptions.isEmpty()) {
+                System.out.print("move: ");
+                for (String each : moveOptions) {
+                    System.out.print(each + " ");
+                }
+                System.out.println();
+            } else System.out.println("Out of stamina! Cannot move...");
+            System.out.print("block: ");
+            for (String each : blockOptions) {
+                System.out.print(each + " ");
+            }
+            System.out.println();
+        }
 
         boolean isValidInput = false;
         while (!isValidInput) {

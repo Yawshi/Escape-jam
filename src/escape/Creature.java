@@ -26,13 +26,13 @@ public class Creature {
     }
 
     /**
-     * The creature decides on its move and executes it. <p>
-     * It will check all adjacent rooms it can move into. <p>
-     * It will never move into the room it was previously in, unless it has no other options. <p>
-     * Otherwise if it finds the player or a room they were once in, it moves there, <p>
-     * otherwise if it finds its goal, it moves there, <p>
-     * otherwise if it can move downwards, it moves downwards, <p>
-     * otherwise it picks a random adjacent room (out of its remaining options) to move into.
+     * The creature decides on its move and executes it: <p>
+     * 1. It will check all adjacent rooms it can move into. <p>
+     * 2. It will never move into the room it was previously in, unless it has no other options. <p>
+     * 3. Otherwise if it finds the player or a room they were once in, it moves there, <p>
+     * 4. otherwise if it finds its goal, it moves there, <p>
+     * 5. otherwise if it can move downwards, it moves downwards, <p>
+     * 6. otherwise it picks a random adjacent room (out of its remaining options) to move into.
      * @param player the {@code Player} object in the game
      */
     void decideMove(Player player) {

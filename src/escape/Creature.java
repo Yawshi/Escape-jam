@@ -2,10 +2,22 @@ package escape;
 
 import java.util.ArrayList;
 
+/**
+ * The antagonist of the game. The Creature starts in the player's goal room, 
+ * will kill the player (causing a loss) if both exist in the same room after any move, 
+ * and has a goal room for itself (the player's start room) causing a loss for the player. <p>
+ * The Creature uses it/its pronouns. Be respectful.
+ * @author Yawshi
+ */
 public class Creature {
     Room inRoom, previousRoom, startRoom, goalRoom;
     int highestPlayerStepFound = 0;
 
+    /**
+     * Initialise {@code Creature} objects with its start and goal rooms, also places it in its start room.
+     * @param start the Creature's start room
+     * @param goal the Creature's goal room
+     */
     Creature(Room start, Room goal) {
         this.inRoom = start;
         this.previousRoom = start;
@@ -13,6 +25,16 @@ public class Creature {
         this.goalRoom = goal;
     }
 
+    /**
+     * The creature decides on its move and executes it. <p>
+     * It will check all adjacent rooms it can move into. <p>
+     * It will never move into the room it was previously in, unless it has no other options. <p>
+     * Otherwise if it finds the player or a room they were once in, it moves there, <p>
+     * otherwise if it finds its goal, it moves there, <p>
+     * otherwise if it can move downwards, it moves downwards, <p>
+     * otherwise it picks a random adjacent room (out of its remaining options) to move into.
+     * @param player the {@code Player} object in the game
+     */
     void decideMove(Player player) {
         Room moveTo = this.inRoom;
 
@@ -79,6 +101,10 @@ public class Creature {
         }
     }
 
+    /**
+     * Returns whether this creature is at its goal.
+     * @return whether this creature is at its goal
+     */
     boolean atGoal() {
         return (this.inRoom == this.goalRoom);
     }
